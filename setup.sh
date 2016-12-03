@@ -10,7 +10,9 @@ command -v brew >/dev/null 2>&1 || {echo "Brew not installed, installing now..."
 echo "brew installing all required modules..."
 cat requirements.txt | while read LINE
 do
-    brew install $LINE
+    if ! brew ls --versions $LINE > /dev/null; then
+        brew install $LINE
+    fi
 done
 
 # setup vim
@@ -27,11 +29,11 @@ if [-e ~/.bash_profile]
 then
     mv ~/.bash_profile ~/.bash_profile_old
 fi
+ln -s ~/dotfiles/bash_profile ~/.bash_profile
 if [-e ~/.vimrc]
 then
     mv ~/.vimrc ~/.vimrc_old
 fi
-ln -s ~/dotfiles/bash_profile ~/.bash_profile
 ln -s ~/dotfiles/vimrc ~/.vimrc
 
 echo "All set, Enjoy your mac!"
