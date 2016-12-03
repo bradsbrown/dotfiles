@@ -10,9 +10,6 @@ test -r /sw/bin/init.sh && . /sw/bin/init.sh
 PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}"
 export PATH
 
-# Enable tab completion
-# source ~/git-completion.bash
-
 # colors!
 green="\[\033[0;32m\]"
 blue="\[\033[0;34m\]"
