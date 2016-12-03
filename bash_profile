@@ -1,3 +1,4 @@
+export EDITOR=vim
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 bind "set completion-ignore-case on"
