@@ -10,7 +10,7 @@ PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}"
 export PATH
 
 # Enable tab completion
-source ~/git-completion.bash
+# source ~/git-completion.bash
 
 # colors!
 green="\[\033[0;32m\]"
@@ -18,19 +18,41 @@ blue="\[\033[0;34m\]"
 purple="\[\033[0;35m\]"
 reset="\[\033[0m\]"
 
-# Change command prompt
-source ~/git-prompt.sh
-export GIT_PS1_SHOWDIRTYSTATE=1
-# '\u' adds the name of the current user to the prompt
-# '\$(__git_ps1)' adds git-related stuff
-# '\W' adds the name of the current directory
-export PS1="$purple\u$green\$(__git_ps1)$blue \W $ $reset"
+# Terminal Aliases
+alias ls="ls -FGh"
+alias ll="ls -l"
+alias l="ls"
+alias la="ls -la"
+alias su="su -"
 
-# Useful Aliases
+# Git Aliases
 alias ,b='git branch'
 alias ,s='git status'
 alias ,a='git add'
 alias ,c='git commit'
+alias ,cc='git commit'
 alias ,ca='git commit -a'
-alias ,po='git push origin'
-alias ,pu='git push upstream'
+alias ,pso='git push origin'
+alias ,psu='git push upstream'
+alias ,plum='git pull upstream master'
+
+# Work-specific Aliases
+alias .rba='cd ~/Development/rba/rba_roast'
+
+# Bash Scripting
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+fi
+for script in $(brew --prefix)/etc/profile.d/*.sh
+do
+    if [ -r $script ]; then
+        . $script
+    fi
+done
+if [ -f ~/.bashrc ]
+then
+    . ~/.bashrc;
+fi
+
+# AutoEnv Activation
+source /usr/local/opt/autoenv/activate.sh
