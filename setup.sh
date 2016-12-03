@@ -16,9 +16,10 @@ do
 done
 
 # setup vim
-echo "Installing Plug for vim..."
-if ! [ -e ~/.vim/autoload/plug.vim ]
-then
+echo "Checking for vim-plug..."
+if ! [ -e ~/.vim/autoload/plug.vim ]; then
+    echo "vim-plug not found. Installing..."
+    PLUGINSTALL=true
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
@@ -38,8 +39,22 @@ if ! [ -s ~/.vimrc ]; then
 fi
 
 # Add zenburn color scheme to vim colors
+if ! [ -e ~/.vim/colors  ]; then
+    mkdir ~/.vim/colors
+fi
 if ! [ -e ~/.vim/colors/zenburn.vim ]; then
     ln -s ~/dotfiles/zenburn.vim ~/.vim/colors/zenburn.vim
+fi
+
+# Run PlugInstall if necessary
+if [ "$PLUGINSTALL" == true ]; then
+    echo "Plug was installed, do you want to run PlugInstall to setup your plugins now?"
+    read -p "y/n: " DOINSTALL
+    if [ $DOINSTALL == 'y' ]; then
+        echo "You will now be taken to vim. You can quit with ':q' when done."
+        sleep 3
+        vim -c "PlugInstall"
+    fi
 fi
 
 echo "All set, Enjoy your mac!"
