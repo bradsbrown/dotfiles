@@ -37,4 +37,9 @@ if ! [ -s ~/.vimrc ]; then
     ln -s ~/dotfiles/vimrc ~/.vimrc
 fi
 
+# Add zenburn color scheme to vim colors
+if ! [ -e ~/.vim/colors/zenburn.vim ]; then
+    ln -s ~/dotfiles/zenburn.vim ~/.vim/colors/zenburn.vim
+fi
+
 echo "All set, Enjoy your mac!"
