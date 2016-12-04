@@ -12,7 +12,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'nvie/vim-flake8'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-" Plug 'maralla/completor.vim'
+if has("gui_running")
+    Plug 'maralla/completor.vim'
+endif
 Plug 'bling/vim-airline'
 Plug 'jiangmiao/auto-pairs'
 call plug#end()
