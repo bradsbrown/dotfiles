@@ -1,5 +1,7 @@
+git
 git-extras
 bash-completion
+vim
 macvim
 python
 autoenv
