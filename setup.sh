@@ -23,19 +23,35 @@ if ! [ -e ~/.vim/autoload/plug.vim ]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-# Move old Bash Profile and vimrc, create link to new ones
-echo "Moving old bash profile and vimrc, symlinking dotfiles versions..."
-if ! [ -s ~/.bash_profile ]; then
-    if [ -e ~/.bash_profile ]; then
-        mv ~/.bash_profile ~/.bash_profile_old
+# Move old Bash and Vim setting files, create link to new ones
+echo "Moving old Bash and Vim setting files, symlinking dotfiles versions..."
+bashprof=~/.bash_profile
+if ! [ -s $bashprof ]; then
+    if [ -e $bashprof ]; then
+        mv $bashprof ${bashprof}_old
     fi
-    ln -s ~/dotfiles/bash_profile ~/.bash_profile
+    ln -s ~/dotfiles/bash_profile $bashprof
 fi
-if ! [ -s ~/.vimrc ]; then
-    if [ -e ~/.vimrc ]; then
-        mv ~/.vimrc ~/.vimrc_old
+bashrc=~/.bashrc
+if ! [ -s $bashrc ]; then
+    if [ -e $bashrc ]; then
+        mv $bashrc ${bashrc}_old
     fi
-    ln -s ~/dotfiles/vimrc ~/.vimrc
+    ln -s ~/dotfiles/bashrc $bashrc
+fi
+vimrc=~/.vimrc
+if ! [ -s $vimrc ]; then
+    if [ -e $vimrc ]; then
+        mv $vimrc ${vimrc}_old
+    fi
+    ln -s ~/dotfiles/vimrc $vimrc
+fi
+colorsh=/usr/local/etc/profile.d/colorsh.sh
+if ! [ -s $colorsh ]; then
+    if [ -e $colorsh ]; then
+        mv $colorsh ${colorsh}_old
+    fi
+    ln -s ~/dotfiles/colorsh.sh $colorsh
 fi
 
 # Add zenburn color scheme to vim colors
