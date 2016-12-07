@@ -99,6 +99,8 @@ function! g:ToggleNuMode()
    endif
 endfunc
 nnoremap <C-l> :call g:ToggleNuMode()<CR>
+let mapleader = "\<Space>"
+nmap <Leader>8 :call Flake8()<CR>
 
 " Flake8 Stuff
 autocmd FileType python map <buffer> <leader>8 :call Flake8()<CR>
