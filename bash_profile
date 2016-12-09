@@ -34,6 +34,8 @@ alias ,ch='git checkout'
 alias ,pso='git push origin'
 alias ,psu='git push upstream'
 alias ,plum='git pull upstream master'
+alias ,gsl='git stash list'
+alias ,gsp='git stash pop'
 
 # Work-specific Aliases
 alias .rba='cd ~/Development/rba/rba_roast'
