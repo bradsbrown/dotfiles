@@ -117,3 +117,8 @@ let g:ctrlp_regexp = 1
 
 " NerdTree
 map <C-n> :NERDTreeToggle<CR>
+
+" BufExplorer
+nnoremap <silent> <M-F12> :BufExplorer<CR>
+nnoremap <silent> <F12> :bn<CR>
+nnoremap <silent> <S-F12> :bp<CR>
