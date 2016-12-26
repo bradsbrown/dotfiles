@@ -11,6 +11,8 @@ call plug#begin()
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'nvie/vim-flake8'
 Plug 'airblade/vim-gitgutter'
+Plug 'scrooloose/nerdtree'
+Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-fugitive'
 if has("gui_running")
     Plug 'maralla/completor.vim'
@@ -112,3 +114,6 @@ let g:flake8_show_in_file=1
 " Ctrlp
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_regexp = 1
+
+" NerdTree
+map <C-n> :NERDTreeToggle<CR>
