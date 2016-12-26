@@ -53,6 +53,13 @@ if ! [ -s $colorsh ]; then
     fi
     ln -s ~/dotfiles/colorsh.sh $colorsh
 fi
+tmux=~/.tmux.conf
+if ! [ -s $tmux ]; then
+    if [ -e $tmux ]; then
+        mv $tmux ${tmux}_old
+    fi
+    ln -s ~/dotfiles/tmux.conf $tmux
+fi
 
 # Add zenburn color scheme to vim colors
 if ! [ -e ~/.vim/colors  ]; then
