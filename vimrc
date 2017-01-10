@@ -13,6 +13,7 @@ Plug 'nvie/vim-flake8'
 Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
+Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 if has("gui_running")
     Plug 'maralla/completor.vim'
