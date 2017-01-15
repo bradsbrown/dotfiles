@@ -1,0 +1,18 @@
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+[color]
+	ui = auto
+[push]
+	default = upstream
+[merge]
+	conflictstyle = diff3
+[credential]
+	helper = osxkeychain
+[user]
+	name = Brad Brown
+	email = brad@bradsbrown.com
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true

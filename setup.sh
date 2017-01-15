@@ -60,6 +60,13 @@ if ! [ -s $tmux ]; then
     fi
     ln -s ~/dotfiles/tmux.conf $tmux
 fi
+gitconfig==~/.gitconfig
+if ! [ -s $gitconfig ]; then
+    if [ -e $gitconfig ]; then
+        mv $gitconfig ${gitconfig}_old
+    fi
+    ln -s ~/dotfiles/gitconfig $gitconfig
+fi
 
 # Add zenburn color scheme to vim colors
 if ! [ -e ~/.vim/colors  ]; then
