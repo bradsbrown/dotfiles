@@ -1,3 +1,4 @@
+export GOPATH=$HOME/golang
 export EDITOR=vim
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
