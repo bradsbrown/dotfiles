@@ -37,6 +37,7 @@ alias ,psu='git push upstream'
 alias ,plum='git pull upstream master'
 alias ,gsl='git stash list'
 alias ,gsp='git stash pop'
+alias ,gpp='git log --oneline --graph --color --all --decorate'
 
 # Work-specific Aliases
 alias .rba='cd ~/Development/rba/rba_roast'
