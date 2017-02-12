@@ -81,6 +81,10 @@ set listchars=tab:>-                " show tab chars clearly
 autocmd FileType gitcommit setlocal spell
 autocmd FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
+" markdown handling
+autocmd BufRead, BufNewFile *.md set filetype=Markdown
+au Filetype Markdown setlocal wrap textwidth=80
+
 " Remove trailing whitespace on save
 autocmd BufWritePre * :%s/\s\+$//e
 
