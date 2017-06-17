@@ -76,6 +76,7 @@ set shiftround                      " indent/oudent to nearest tabstop
 set autoindent                      " auto indent
 set list                            " show all chars
 set listchars=tab:>-                " show tab chars clearly
+autocmd Filetype cucumber setlocal ts=2 sw=2 expandtab  " Special tab settings for Gherkin files
 
 " Better Git Stuff
 autocmd FileType gitcommit setlocal spell
@@ -119,6 +120,9 @@ let g:flake8_show_in_file=1
 " Ctrlp
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_regexp = 1
+
+" JSON Handling
+nmap <Leader>j :%!python -m json.tool<CR>
 
 " NerdTree
 map <C-n> :NERDTreeToggle<CR>

@@ -39,9 +39,11 @@ alias ,plom='git pull origin master'
 alias ,gsl='git stash list'
 alias ,gsp='git stash pop'
 alias ,gpp='git log --oneline --graph --color --all --decorate'
+alias ,gsu='cd ~/Development && git standup -m 3'
 
 # Work-specific Aliases
 alias .rba='cd ~/Development/rba/rba_roast'
+alias .jjb='rm -rf ~/jjb && ./build-jobs.sh --test -o ~/jjb'
 
 # personal mutt cloud instance
 alias clmutt='ssh bradsbrown@mutt.bradsbrown.com -t "mutt"'
@@ -60,6 +62,11 @@ if [ -f ~/.bashrc ]
 then
     . ~/.bashrc;
 fi
+
+# branch searcher
+function ,tobranch() {
+    git branch | sed -n -e 's/^.* //' -e /"$1"/p | xargs -n 1 git checkout
+}
 
 # AutoEnv Activation
 source /usr/local/opt/autoenv/activate.sh
