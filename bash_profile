@@ -43,6 +43,9 @@ alias ,gpp='git log --oneline --graph --color --all --decorate'
 # Work-specific Aliases
 alias .rba='cd ~/Development/rba/rba_roast'
 
+# personal mutt cloud instance
+alias clmutt='ssh bradsbrown@mutt.bradsbrown.com -t "mutt"'
+
 # Bash Scripting
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
