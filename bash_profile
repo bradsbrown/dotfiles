@@ -23,6 +23,7 @@ alias ll="ls -l"
 alias l="ls"
 alias la="ls -la"
 alias su="su -"
+alias ssjqe="ssh 10.15.194.15"
 
 # Git Aliases
 alias ,b='git branch'
