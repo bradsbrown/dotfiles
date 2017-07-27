@@ -62,6 +62,14 @@ imap <silent> <C-S-Tab> <Esc>:tabprevious<CR>
 map <silent> <C-t> :tabnew<CR>
 imap <silent> <C-t> <Esc><C-t>
 
+" Window Split Navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+set splitbelow
+set splitright
+
 " Search Stuff
 set hlsearch                        " search highlighting
 set incsearch                       " dynamic highlighting
