@@ -72,3 +72,6 @@ function ,tobranch() {
 
 # AutoEnv Activation
 source /usr/local/opt/autoenv/activate.sh
+
+# theFuck Activation
+eval "$(thefuck --alias)"
