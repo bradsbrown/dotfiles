@@ -15,6 +15,8 @@ Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'mileszs/ack.vim'
+Plug 'w0rp/ale'
 if has("gui_running")
     Plug 'maralla/completor.vim'
 endif
@@ -124,6 +126,9 @@ let g:pylint_map='<leader>l'
 let g:pyflakes_use_quickfix=1
 let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
+
+" ALE settings
+let g:ale_linters = {'python': ['flake8']}
 
 " Ctrlp
 let g:ctrlp_working_path_mode = 'ra'
