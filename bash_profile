@@ -83,3 +83,6 @@ function clmutt {
     echo using host $host
     ssh bradsbrown@${host} -t mutt
 }
+
+# theFuck Activation
+eval "$(thefuck --alias)"
