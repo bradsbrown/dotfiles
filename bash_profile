@@ -8,7 +8,7 @@ test -r /sw/bin/init.sh && . /sw/bin/init.sh
 
 # Setting PATH for Python 3.5
 # The orginal version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}"
+PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}:/Users/brad2913/.local/bin"
 export PATH
 
 # colors!
@@ -45,10 +45,7 @@ alias ,gsu='cd ~/Development && git standup -m 3'
 
 # Work-specific Aliases
 alias .rba='cd ~/Development/rba/rba_roast'
-alias .jjb='rm -rf ~/jjb && ./build-jobs.sh --test -o ~/jjb'
-
-# personal mutt cloud instance
-alias clmutt='ssh bradsbrown@mutt.bradsbrown.com -t "mutt"'
+alias .jjb='rm -rf ~/jjb && ./build-jobs.sh --test -o ~/jjb && ./build-jobs.sh --cluster --test -o ~/jjb'
 
 # Bash Scripting
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -70,5 +67,19 @@ function ,tobranch() {
     git branch | sed -n -e 's/^.* //' -e /"$1"/p | xargs -n 1 git checkout
 }
 
-# AutoEnv Activation
-source /usr/local/opt/autoenv/activate.sh
+# pyenv
+eval "$(pyenv init -)"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
+export WORKON_HOME=$HOME/.virtualenvs
+pyenv virtualenvwrapper
+
+function clmutt {
+    host=muttdirect
+    /opt/cisco/anyconnect/bin/vpn state | grep -lq Connected
+    exitcode=$?
+    if [ $exitcode -eq 0 ]; then
+        host=muttvpn
+    fi
+    echo using host $host
+    ssh bradsbrown@${host} -t mutt
+}
