@@ -6,3 +6,4 @@ macvim
 python
 fzf
 thefuck
+ripgrep

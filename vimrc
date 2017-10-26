@@ -139,6 +139,8 @@ endif
 " Ctrlp
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_regexp = 1
+let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+let g:ctrlp_use_caching = 0
 
 " JSON Handling
 nmap <Leader>j :%!python -m json.tool<CR>
