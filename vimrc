@@ -17,6 +17,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
+Plug 'tpope/vim-commentary'
 if has("gui_running")
     Plug 'maralla/completor.vim'
 endif
@@ -129,6 +130,11 @@ let g:flake8_show_in_file=1
 
 " ALE settings
 let g:ale_linters = {'python': ['flake8']}
+
+" Ack setup
+if executable('ag')
+    let g:ackprg = 'ag --vimgrep'
+endif
 
 " Ctrlp
 let g:ctrlp_working_path_mode = 'ra'
