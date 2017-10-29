@@ -49,42 +49,42 @@ fi
 # Move old Bash and Vim setting files, create link to new ones
 echo "Moving old Bash and Vim setting files, symlinking dotfiles versions..."
 bashprof=~/.bash_profile
-if ! [ -s $bashprof ]; then
+if ! [ -L $bashprof ]; then
     if [ -e $bashprof ]; then
         mv $bashprof ${bashprof}_old
     fi
     ln -s ~/dotfiles/bash_profile $bashprof
 fi
 bashrc=~/.bashrc
-if ! [ -s $bashrc ]; then
+if ! [ -L $bashrc ]; then
     if [ -e $bashrc ]; then
         mv $bashrc ${bashrc}_old
     fi
     ln -s ~/dotfiles/bashrc $bashrc
 fi
 vimrc=~/.vimrc
-if ! [ -s $vimrc ]; then
+if ! [ -L $vimrc ]; then
     if [ -e $vimrc ]; then
         mv $vimrc ${vimrc}_old
     fi
     ln -s ~/dotfiles/vimrc $vimrc
 fi
 colorsh=/usr/local/etc/profile.d/colorsh.sh
-if ! [ -s $colorsh ]; then
+if ! [ -L $colorsh ]; then
     if [ -e $colorsh ]; then
         mv $colorsh ${colorsh}_old
     fi
     ln -s ~/dotfiles/colorsh.sh $colorsh
 fi
 tmux=~/.tmux.conf
-if ! [ -s $tmux ]; then
+if ! [ -L $tmux ]; then
     if [ -e $tmux ]; then
         mv $tmux ${tmux}_old
     fi
     ln -s ~/dotfiles/tmux.conf $tmux
 fi
 gitconfig==~/.gitconfig
-if ! [ -s $gitconfig ]; then
+if ! [ -L $gitconfig ]; then
     if [ -e $gitconfig ]; then
         mv $gitconfig ${gitconfig}_old
     fi
