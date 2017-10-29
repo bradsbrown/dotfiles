@@ -4,16 +4,39 @@ echo "Brad's Auto Setup: preparing to set up your Mac..."
 
 # check for brew, install if not
 echo "Checking for homebrew..."
-command -v brew >/dev/null 2>&1 || {/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
+Command -v brew
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 # add all brew requirements
 echo "brew installing all required modules..."
-cat requirements.txt | while read LINE
-do
-    if ! brew ls --versions $LINE > /dev/null; then
-        brew install $LINE
-    fi
-done
+brew bundle
+
+# set up pip
+Command -v pip
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    sudo easy_install pip
+    sudo pip install virtualenv
+fi
+
+# set up pipsi
+Command -v pipsi
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
+fi
+
+
+# install pipenv
+Command -v pipenv
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    pipsi install pipenv
+fi
+
 
 # setup vim
 echo "Checking for vim-plug..."

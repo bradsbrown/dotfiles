@@ -8,7 +8,7 @@ test -r /sw/bin/init.sh && . /sw/bin/init.sh
 
 # Setting PATH for Python 3.5
 # The orginal version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}:/Users/brad2913/.local/bin"
+PATH="/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}:${HOME}/.local/bin"
 export PATH
 
 # colors!
@@ -69,9 +69,13 @@ function ,tobranch() {
 
 # pyenv
 eval "$(pyenv init -)"
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
-export WORKON_HOME=$HOME/.virtualenvs
-pyenv virtualenvwrapper
+command -v virtualenvwrapper
+exit_code=$?
+if [ "$exit_code" -eq 0 ]; then
+    export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
+    export WORKON_HOME=$HOME/.virtualenvs
+    pyenv virtualenvwrapper
+fi
 
 function clmutt {
     host=muttdirect
