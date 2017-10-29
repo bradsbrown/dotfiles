@@ -83,7 +83,7 @@ if ! [ -L $tmux ]; then
     fi
     ln -s ~/dotfiles/tmux.conf $tmux
 fi
-gitconfig==~/.gitconfig
+gitconfig=~/.gitconfig
 if ! [ -L $gitconfig ]; then
     if [ -e $gitconfig ]; then
         mv $gitconfig ${gitconfig}_old
