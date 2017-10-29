@@ -4,16 +4,39 @@ echo "Brad's Auto Setup: preparing to set up your Mac..."
 
 # check for brew, install if not
 echo "Checking for homebrew..."
-command -v brew >/dev/null 2>&1 || {/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"}
+Command -v brew
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 # add all brew requirements
 echo "brew installing all required modules..."
-cat requirements.txt | while read LINE
-do
-    if ! brew ls --versions $LINE > /dev/null; then
-        brew install $LINE
-    fi
-done
+brew bundle
+
+# set up pip
+Command -v pip
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    sudo easy_install pip
+    sudo pip install virtualenv
+fi
+
+# set up pipsi
+Command -v pipsi
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
+fi
+
+
+# install pipenv
+Command -v pipenv
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    pipsi install pipenv
+fi
+
 
 # setup vim
 echo "Checking for vim-plug..."
@@ -26,42 +49,42 @@ fi
 # Move old Bash and Vim setting files, create link to new ones
 echo "Moving old Bash and Vim setting files, symlinking dotfiles versions..."
 bashprof=~/.bash_profile
-if ! [ -s $bashprof ]; then
+if ! [ -L $bashprof ]; then
     if [ -e $bashprof ]; then
         mv $bashprof ${bashprof}_old
     fi
     ln -s ~/dotfiles/bash_profile $bashprof
 fi
 bashrc=~/.bashrc
-if ! [ -s $bashrc ]; then
+if ! [ -L $bashrc ]; then
     if [ -e $bashrc ]; then
         mv $bashrc ${bashrc}_old
     fi
     ln -s ~/dotfiles/bashrc $bashrc
 fi
 vimrc=~/.vimrc
-if ! [ -s $vimrc ]; then
+if ! [ -L $vimrc ]; then
     if [ -e $vimrc ]; then
         mv $vimrc ${vimrc}_old
     fi
     ln -s ~/dotfiles/vimrc $vimrc
 fi
 colorsh=/usr/local/etc/profile.d/colorsh.sh
-if ! [ -s $colorsh ]; then
+if ! [ -L $colorsh ]; then
     if [ -e $colorsh ]; then
         mv $colorsh ${colorsh}_old
     fi
     ln -s ~/dotfiles/colorsh.sh $colorsh
 fi
 tmux=~/.tmux.conf
-if ! [ -s $tmux ]; then
+if ! [ -L $tmux ]; then
     if [ -e $tmux ]; then
         mv $tmux ${tmux}_old
     fi
     ln -s ~/dotfiles/tmux.conf $tmux
 fi
-gitconfig==~/.gitconfig
-if ! [ -s $gitconfig ]; then
+gitconfig=~/.gitconfig
+if ! [ -L $gitconfig ]; then
     if [ -e $gitconfig ]; then
         mv $gitconfig ${gitconfig}_old
     fi
