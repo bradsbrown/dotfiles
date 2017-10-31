@@ -69,13 +69,9 @@ function ,tobranch() {
 
 # pyenv
 eval "$(pyenv init -)"
-command -v virtualenvwrapper
-exit_code=$?
-if [ "$exit_code" -eq 0 ]; then
-    export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
-    export WORKON_HOME=$HOME/.virtualenvs
-    pyenv virtualenvwrapper
-fi
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
+export WORKON_HOME=$HOME/.virtualenvs
+pyenv virtualenvwrapper
 
 function clmutt {
     host=muttdirect
