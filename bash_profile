@@ -86,3 +86,6 @@ function clmutt {
 
 # theFuck Activation
 eval "$(thefuck --alias)"
+
+# A little Python-ism to start your session
+python -m this | tail -n +3 | sort -R | head -1
