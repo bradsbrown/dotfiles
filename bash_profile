@@ -44,7 +44,7 @@ alias ,gpp='git log --oneline --graph --color --all --decorate'
 alias ,gsu='cd ~/Development && git standup -m 3'
 
 # Work-specific Aliases
-alias .rba='cd ~/Development/rba/rba_roast'
+alias .rba='cd ~/Development/rba'
 alias .jjb='rm -rf ~/jjb && ./build-jobs.sh --test -o ~/jjb && ./build-jobs.sh --cluster --test -o ~/jjb'
 
 # Bash Scripting
