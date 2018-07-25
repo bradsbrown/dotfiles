@@ -75,9 +75,14 @@ pyenv virtualenvwrapper
 
 function clmutt {
     host=muttdirect
-    /opt/cisco/anyconnect/bin/vpn state | grep -lq Connected
-    exitcode=$?
-    if [ $exitcode -eq 0 ]; then
+    if [ "$1" = "" ]; then
+        /opt/cisco/anyconnect/bin/vpn state | grep -lq Connected
+        exitcode=$?
+        if [ $exitcode -eq 0 ]; then
+            host=muttvpn
+        fi
+    fi
+    if [ "$1" = "--vpn" ]; then
         host=muttvpn
     fi
     echo using host $host
