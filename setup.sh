@@ -42,7 +42,9 @@ if [ "$exit_code" -ne "0" ]; then
     pipx install poetry
 fi
 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+if ! [ -d "${HOME}/.oh-my-zsh" ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+fi
 
 # setup vim
 echo "Checking for vim-plug..."
@@ -76,8 +78,10 @@ function checkLink() {
     fi
     source_path="${current_dir}/${source_file}"
     target_path="${target_dir}/${file_prepend}${source_file}"
-    if ! [ -L "$target_path" ]; then
-        if [ -e  "$target_path" ]; then
+    if [ -e  "$target_path" ]; then
+        if ! [ -L "$target_path" ]; then
+            unlink "$target_path"
+        else
             mv "$target_path" "${target_path}_old"
         fi
     fi
@@ -104,15 +108,16 @@ mkdir -p "$vim_dir"
 mkdir -p "$nvim_dir"
 checkLink coc-settings.json "$vim_dir"
 checkLink coc-settings.json "$nvim_dir"
-checkLink init.vim $"nvim_dir"
+checkLink init.vim "$nvim_dir"
 
 # Add zenburn color scheme to vim colors
 if ! [ -e ~/.vim/colors  ]; then
     mkdir ~/.vim/colors
 fi
-for x in ls ~/dotfiles/*.vim; do
-    if ! [ -e "$HOME/.vim/colors/$x" ]; then
-        ln -s "$HOME/dotfiles/${x}" "$HOME/.vim/colors/${x}"
+for x in $(ls colors); do
+    name=${x##*/}
+    if ! [ -e "$HOME/.vim/colors/$name" ]; then
+        ln -s "$HOME/dotfiles/colors/${name}" "$HOME/.vim/colors/${name}"
     fi
 done
 
