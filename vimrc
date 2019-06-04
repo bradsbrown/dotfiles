@@ -8,21 +8,35 @@ endif
 " Plug Stuff
 filetype off
 call plug#begin()
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'nvie/vim-flake8'
-Plug 'airblade/vim-gitgutter'
+" Plug 'nvie/vim-flake8'
+" Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-commentary'
-if has("gui_running")
-    Plug 'maralla/completor.vim'
-endif
+" Plug 'Valloric/YouCompleteMe'
+" Plug 'neoclide/coc.nvim', {'do': './install.sh'}
 Plug 'bling/vim-airline'
 Plug 'jiangmiao/auto-pairs'
+" Plug 'severin-lemaignan/vim-minimap'
+Plug 'ambv/black'
+Plug 'sheerun/vim-polyglot'
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'gu-fan/riv.vim'
+" Plug 'Konfekt/FastFold'
+" Plug 'tmhedberg/SimpylFold'
+if has('nvim')
+    let $GH_USER = "brad2913"
+    let $GH_PASS = "asdf"
+    let g:critiq_github_url = "https://github.rackspace.com/api/v3"
+    let g:critiq_github_oauth = 1
+    Plug('AGhost-7/critiq.vim')
+endif
 call plug#end()
 
 " Basic Stuff
@@ -30,10 +44,11 @@ syntax on
 filetype on
 filetype plugin indent on
 set nocompatible
-colors zenburn
+colors PaperColor
 if has("gui_macvim")
-   set guifont=Source\ Code\ Pro\ Light:h14
-else
+    set macligatures
+   set guifont=Fira\ Code\ Retina:h14
+elseif !has("nvim")
    set guifont=Source\ Code\ Pro:h12
 endif
 set nowrap                          " Don't wrap text
@@ -47,7 +62,7 @@ set showmatch                       " mark open/close punctuation when typing
 set backspace=indent,eol,start      " helps with backspace in insert mode
 set spelllang=en_us
 set tildeop
-
+set foldlevelstart=99
 
 " Menu Stuff
 set wildmenu                        " Menu completion on tab
@@ -120,6 +135,17 @@ endfunc
 nnoremap <C-l> :call g:ToggleNuMode()<CR>
 let mapleader = "\<Space>"
 nmap <Leader>8 :call Flake8()<CR>
+nmap <Leader>b :Black<CR>
+
+" Triger `autoread` when files changes on disk
+set autoread
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 " Flake8 Stuff
 autocmd FileType python map <buffer> <leader>8 :call Flake8()<CR>
@@ -129,11 +155,14 @@ let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
 
 " ALE settings
-let g:ale_linters = {'python': ['flake8']}
+let g:ale_linters = {'python': ['flake8', 'mypy']}
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+let g:ale_python_mypy_executable = 'mypy'
 
 " Ack setup
 if executable('ag')
     let g:ackprg = 'ag --vimgrep'
+    set grepprg=ag\ --nogroup\ --nocolor
 endif
 
 " Ctrlp
@@ -148,7 +177,61 @@ nmap <Leader>j :%!python -m json.tool<CR>
 " NerdTree
 map <C-n> :NERDTreeToggle<CR>
 
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+ exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('py', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('json', 'blue', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('js', 'red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('rst', 'magenta', 'none', '#ff00ff', '#151515')
+call NERDTreeHighlightFile('md', 'magenta', 'none', '#3366FF', '#151515')
+
 " BufExplorer
 nnoremap <silent> <M-F12> :BufExplorer<CR>
 nnoremap <silent> <F12> :bn<CR>
 nnoremap <silent> <S-F12> :bp<CR>
+
+" coc.vim
+set hidden
+set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+set signcolumn=yes
+" let g:coc_force_debug = 1
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+nmap <leader>rn <Plug>(coc-rename)

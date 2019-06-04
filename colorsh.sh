@@ -38,5 +38,6 @@ PS1='\[\e[${P_C_DEFAULT}\][\
 \[\e[${P_C_NAME}\]\u@\
 \[\e[${P_C_HOST}\]\h \
 \[\e[${P_C_CWD}\]\w\
-\[\e[${C_PURPLE}\]$(__git_ps1 " (%s)")\[\e[${P_C_DEFAULT}\]]\$ \
+\[\e[${P_C_DEFAULT}\]]\
+\n\[\e[${C_PURPLE}\]$(__git_ps1 " (%s)")\[\e[${P_C_DEFAULT}\]\$ \
 \[\e[m\]'

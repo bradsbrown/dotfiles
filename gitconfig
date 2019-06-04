@@ -1,18 +1,42 @@
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
+	attributesfile = ~/.gitattributes
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
 	ui = auto
 [push]
-	default = upstream
+	default = current
 [merge]
 	conflictstyle = diff3
 [credential]
 	helper = osxkeychain
 [user]
 	name = Brad Brown
-	email = brad@bradsbrown.com
+	email = brad.brown@rackspace.com
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+[init]
+	templatedir = ~/.git-templates
+[alias]
+    files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
+    stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+    review = !mvim -p $(git files) +\"tabdo Gdiff $REVIEW_BASE\" +\"let g:gitgutter_diff_base = '$REVIEW_BASE'\"
+    reviewone = !mvim -p +\"tabdo Gdiff $REVIEW_BASE\" +\"let g:gitgutter_diff_base = '$REVIEW_BASE'\"
+    plum = pull upstream master
+    plom = pull origin master
+    sl = stash list
+    pp = log --oneline --graph --color --all --decorate
+    pso = push origin
+    ch = checkout
+    ca = commit -a
+    c = commit
+    b = branch
+    nb = checkout -b
+    a = add
+    sp = stash pop
+	diff-image = "!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff \"$@\"; }; f"
+[diff "image"]
+	command = ~/Development/git-diff-image/git_diff_image
