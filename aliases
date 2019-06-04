@@ -1,0 +1,25 @@
+# Terminal Aliases
+alias ls="ls -FGh"
+alias ll="ls -l"
+alias l="ls"
+alias la="ls -la"
+alias cat="ccat"
+alias ducks='du -cks * | sort -rn | head -11'
+
+# Git Aliases
+export REVIEW_BASE=master
+alias ,b='git branch'
+alias ,s='git status'
+alias ,a='git add'
+alias ,c='git commit'
+alias ,cc='git commit'
+alias ,ca='git commit -a'
+alias ,ch='git checkout'
+alias ,pso='git push origin'
+alias ,psu='git push upstream'
+alias ,plum='git pull upstream master'
+alias ,plom='git pull origin master'
+alias ,gsl='git stash list'
+alias ,gsp='git stash pop'
+alias ,gpp='git log --oneline --graph --color --all --decorate'
+alias ,gsu='cd ~/Development && git standup -m 3'

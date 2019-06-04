@@ -1,0 +1,10 @@
+*.swp
+.DS_Store
+.last_commit_message.log
+.pytest_cache/
+.vscode/
+.doctrees/
+*.egg-info/
+.envrc
+.mypy_cache/
+.bash_history
