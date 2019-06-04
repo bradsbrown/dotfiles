@@ -42,6 +42,8 @@ if [ "$exit_code" -ne "0" ]; then
     pipx install poetry
 fi
 
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
 # setup vim
 echo "Checking for vim-plug..."
 if ! [ -e ~/.vim/autoload/plug.vim ]; then
@@ -94,6 +96,7 @@ checkLink tmux.conf "$HOME" --dotted
 checkLink gitconfig "$HOME" --dotted
 checkLink gitignore "$HOME" --dotted
 checkLink gitattributes "$HOME" --dotted
+checkLink zshrc "$HOME" --dotted
 
 # Add zenburn color scheme to vim colors
 if ! [ -e ~/.vim/colors  ]; then
