@@ -1,0 +1,25 @@
+{
+    // JSON Settings
+    "json.enable": true,
+
+    // Python Settings
+    "python.autoComplete.extraPaths": ["./src"],
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyPath": "/Users/bradsbrown/.local/bin/mypy",
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.formatting.provider": "black",
+    "python.jediEnabled": false,
+    "python.sortImports.path": "isort",
+    "python.venvFolders": [
+        "Library/Caches/pypoetry/virtualenvs",
+        ".virtualenvs",
+        "envs",
+        ".pyenv",
+        ".direnv"
+    ],
+
+    // git Settings
+    "git.enableGutters": true
+}

@@ -98,6 +98,14 @@ checkLink gitignore "$HOME" --dotted
 checkLink gitattributes "$HOME" --dotted
 checkLink zshrc "$HOME" --dotted
 
+vim_dir="${HOME}/.vim"
+nvim_dir="${HOME}/.config/nvim"
+mkdir -p "$vim_dir"
+mkdir -p "$nvim_dir"
+checkLink coc-settings.json "$vim_dir"
+checkLink coc-settings.json "$nvim_dir"
+checkLink init.vim $"nvim_dir"
+
 # Add zenburn color scheme to vim colors
 if ! [ -e ~/.vim/colors  ]; then
     mkdir ~/.vim/colors
