@@ -22,21 +22,25 @@ if [ "$exit_code" -ne "0" ]; then
     sudo pip install virtualenv
 fi
 
-# set up pipsi
-Command -v pipsi
+# set up pipx
+command -v pipx
 exit_code=$?
 if [ "$exit_code" -ne "0" ]; then
-    curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
+    python3 -m pip install --user pipx
 fi
-
 
 # install pipenv
 Command -v pipenv
 exit_code=$?
 if [ "$exit_code" -ne "0" ]; then
-    pipsi install pipenv
+    pipx install pipenv
 fi
 
+Command -v poetry
+exit_code=$?
+if [ "$exit_code" -ne "0" ]; then
+    pipx install poetry
+fi
 
 # setup vim
 echo "Checking for vim-plug..."
@@ -46,64 +50,66 @@ if ! [ -e ~/.vim/autoload/plug.vim ]; then
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
+function makeLink() {
+    current_dir=$1
+    shift
+    source_file=$1
+    shift
+    target_dir=$1
+    target_file="$source_file"
+    if shift; then
+        target_file=$1
+    fi
+    ln -s "${current_dir}/${source_file}" "${target_dir}/${target_file}"
+}
+
+function checkLink() {
+    current_dir=$(pwd)
+    source_file=$1
+    shift
+    target_dir=$1
+    file_prepend=""
+    if [ "$1" = "--dotted" ]; then
+        file_prepend="."
+    fi
+    source_path="${current_dir}/${source_file}"
+    target_path="${target_dir}/${file_prepend}${source_file}"
+    if ! [ -L "$target_path" ]; then
+        if [ -e  "$target_path" ]; then
+            mv "$target_path" "${target_path}_old"
+        fi
+    fi
+    makeLink "$current_dir" "$source_file" "$target_dir" "${file_prepend}${source_file}"
+}
+
 # Move old Bash and Vim setting files, create link to new ones
 echo "Moving old Bash and Vim setting files, symlinking dotfiles versions..."
-bashprof=~/.bash_profile
-if ! [ -L $bashprof ]; then
-    if [ -e $bashprof ]; then
-        mv $bashprof ${bashprof}_old
-    fi
-    ln -s ~/dotfiles/bash_profile $bashprof
-fi
-bashrc=~/.bashrc
-if ! [ -L $bashrc ]; then
-    if [ -e $bashrc ]; then
-        mv $bashrc ${bashrc}_old
-    fi
-    ln -s ~/dotfiles/bashrc $bashrc
-fi
-vimrc=~/.vimrc
-if ! [ -L $vimrc ]; then
-    if [ -e $vimrc ]; then
-        mv $vimrc ${vimrc}_old
-    fi
-    ln -s ~/dotfiles/vimrc $vimrc
-fi
-colorsh=/usr/local/etc/profile.d/colorsh.sh
-if ! [ -L $colorsh ]; then
-    if [ -e $colorsh ]; then
-        mv $colorsh ${colorsh}_old
-    fi
-    ln -s ~/dotfiles/colorsh.sh $colorsh
-fi
-tmux=~/.tmux.conf
-if ! [ -L $tmux ]; then
-    if [ -e $tmux ]; then
-        mv $tmux ${tmux}_old
-    fi
-    ln -s ~/dotfiles/tmux.conf $tmux
-fi
-gitconfig=~/.gitconfig
-if ! [ -L $gitconfig ]; then
-    if [ -e $gitconfig ]; then
-        mv $gitconfig ${gitconfig}_old
-    fi
-    ln -s ~/dotfiles/gitconfig $gitconfig
-fi
+checkLink bash_profile "$HOME" --dotted
+checkLink bashrc "$HOME" --dotted
+checkLink profile "$HOME" --dotted
+checkLink aliases "$HOME" --dotted
+checkLink vimrc "$HOME" --dotted
+checkLink colors.sh /usr/local/etc/profile.d
+checkLink tmux.conf "$HOME" --dotted
+checkLink gitconfig "$HOME" --dotted
+checkLink gitignore "$HOME" --dotted
+checkLink gitattributes "$HOME" --dotted
 
 # Add zenburn color scheme to vim colors
 if ! [ -e ~/.vim/colors  ]; then
     mkdir ~/.vim/colors
 fi
-if ! [ -e ~/.vim/colors/zenburn.vim ]; then
-    ln -s ~/dotfiles/zenburn.vim ~/.vim/colors/zenburn.vim
-fi
+for x in ls ~/dotfiles/*.vim; do
+    if ! [ -e "$HOME/.vim/colors/$x" ]; then
+        ln -s "$HOME/dotfiles/${x}" "$HOME/.vim/colors/${x}"
+    fi
+done
 
 # Run PlugInstall if necessary
 if [ "$PLUGINSTALL" == true ]; then
     echo "Plug was installed, do you want to run PlugInstall to setup your plugins now?"
     read -p "y/n: " DOINSTALL
-    if [ $DOINSTALL == 'y' ]; then
+    if [ "$DOINSTALL" == 'y' ]; then
         echo "You will now be taken to vim. You can quit with ':q' when done."
         sleep 3
         vim -c "PlugInstall"
