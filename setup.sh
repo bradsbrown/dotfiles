@@ -95,7 +95,7 @@ checkLink bashrc "$HOME" --dotted
 checkLink profile "$HOME" --dotted
 checkLink aliases "$HOME" --dotted
 checkLink vimrc "$HOME" --dotted
-checkLink colors.sh /usr/local/etc/profile.d
+checkLink colorsh.sh /usr/local/etc/profile.d
 checkLink tmux.conf "$HOME" --dotted
 checkLink gitconfig "$HOME" --dotted
 checkLink gitignore "$HOME" --dotted
