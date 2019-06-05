@@ -1,0 +1,13 @@
+session_name: appanal
+start_directory: '~/Development/qem'
+windows:
+    - layout: main-horizontal
+      options:
+          main-pane-height: 70
+      panes:
+          - shell_command:
+              - sh ~/.tmux-scripts/resize-adaptable.sh -p 70 -l main-horizontal -t appanal
+              - cd dash_metrics
+              - nvim src/shared/callback.py
+          - cd docker
+      window_name: appanal

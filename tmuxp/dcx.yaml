@@ -1,0 +1,12 @@
+session_name: dcx
+start_directory: '~/Development/dcx/qe'
+windows:
+    - layout: main-horizontal
+      options:
+          main-pane-height: 70
+      panes:
+          - shell_command:
+              - sh ~/.tmux-scripts/resize-adaptable.sh -p 70 -l main-horizontal -t dcx
+              - nvim bpi/tests/steps/common.py
+          - echo terminal
+      window_name: dcx

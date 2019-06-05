@@ -1,0 +1,11 @@
+session_name: qet
+start_directory: '~/Development/qet'
+windows:
+    - layout: main-horizontal
+      options:
+          main-pane-height: 70
+      panes:
+          - shell_command:
+              - sh ~/.tmux-scripts/resize-adaptable.sh -p 70 -l main-horizontal -t qet
+          - echo terminal
+      window_name: qet
