@@ -13,7 +13,7 @@
     "python.jediEnabled": false,
     "python.sortImports.path": "isort",
     "python.venvFolders": [
-        "Library/Caches/pypoetry/virtualenvs",
+        "~/Library/Caches/pypoetry/virtualenvs",
         ".virtualenvs",
         "envs",
         ".pyenv",

@@ -7,6 +7,7 @@ windows:
       panes:
           - shell_command:
               - sh ~/.tmux-scripts/resize-adaptable.sh -p 70 -l main-horizontal -t dcx
+              - sleep 2
               - nvim bpi/tests/steps/common.py
           - echo terminal
       window_name: dcx

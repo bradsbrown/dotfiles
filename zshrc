@@ -1,8 +1,12 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH:${HOME}/.local/bin
+export DISABLE_AUTO_TITLE='true'
+#
+export TERM=xterm-256color
+# [ -n "$TMUX" ] && export TERM=screen-256color
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/bradsbrown/.oh-my-zsh"
+export ZSH="/Users/brad2913/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -74,6 +78,7 @@ plugins=(
     github
     httpie
     osx
+    z
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -108,3 +113,10 @@ fi
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.aliases
 source ~/.profile
+eval "$(direnv hook zsh)"
+eval "$(_TMUXP_COMPLETE=source_zsh tmuxp)"
+# pyenv
+eval "$(pyenv init -)"
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
+export WORKON_HOME=$HOME/.virtualenvs
+pyenv virtualenvwrapper

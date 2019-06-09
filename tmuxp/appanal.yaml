@@ -8,6 +8,7 @@ windows:
           - shell_command:
               - sh ~/.tmux-scripts/resize-adaptable.sh -p 70 -l main-horizontal -t appanal
               - cd dash_metrics
+              - sleep 2s
               - nvim src/shared/callback.py
           - cd docker
       window_name: appanal

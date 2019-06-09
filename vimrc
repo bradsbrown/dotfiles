@@ -17,7 +17,7 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 " Plug 'mileszs/ack.vim'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'tpope/vim-commentary'
 " Plug 'Valloric/YouCompleteMe'
 " Plug 'neoclide/coc.nvim', {'do': './install.sh'}

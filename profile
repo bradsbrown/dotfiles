@@ -16,7 +16,7 @@ prun() {
 
 
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
 merged_update() {
@@ -75,7 +75,11 @@ function ,tb() {
 
 # GH assign
 function gta () {
-    IFS=':' read -r -a assignees <<< "$GH_ASSIGNEES"
+    FLAG="-a"
+    if [ "$SHELL" = "/bin/zsh" ]; then
+        FLAG="-A"
+    fi
+    IFS=':' read -r $FLAG assignees <<< "$GH_ASSIGNEES"
     gt-assign-pr $GH_OWNER $GH_REPO $1 "${assignees[@]}"
 }
 
@@ -83,7 +87,8 @@ function gta () {
 function join_by { local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/$d}";  }
 
 _tmux_send_keys_all_panes_ () {
-    to_send=`join_by " Space " "$@"`
+    # to_send=`join_by " Space " "$@"`
+    to_send="$*"
     for _pane in $(tmux list-panes -F '#P'); do
         tmux send-keys -t ${_pane} $to_send Enter
     done
