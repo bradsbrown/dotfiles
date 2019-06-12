@@ -1,7 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH:${HOME}/.local/bin
 export DISABLE_AUTO_TITLE='true'
+export PYTHONDONTWRITEBYTECODE=1
 #
+export ZSH_TMUX_AUTOSTART=false
 export TERM=xterm-256color
 # [ -n "$TMUX" ] && export TERM=screen-256color
 
@@ -72,12 +74,16 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+fpath+=~/.zfunc
 plugins=(
     git
     git-extras
     github
     httpie
     osx
+    pip
+    pyenv
+    tmux
     z
 )
 
@@ -116,7 +122,6 @@ source ~/.profile
 eval "$(direnv hook zsh)"
 eval "$(_TMUXP_COMPLETE=source_zsh tmuxp)"
 # pyenv
-eval "$(pyenv init -)"
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
 export WORKON_HOME=$HOME/.virtualenvs
 pyenv virtualenvwrapper

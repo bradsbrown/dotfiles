@@ -14,6 +14,10 @@ prun() {
     $run_call run "$@"
 }
 
+clean_pyc() {
+    find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+}
+
 
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'

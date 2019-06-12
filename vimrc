@@ -10,26 +10,19 @@ filetype off
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'nvie/vim-flake8'
-" Plug 'airblade/vim-gitgutter'
 Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 " Plug 'mileszs/ack.vim'
-" Plug 'w0rp/ale'
 Plug 'tpope/vim-commentary'
-" Plug 'Valloric/YouCompleteMe'
-" Plug 'neoclide/coc.nvim', {'do': './install.sh'}
 Plug 'bling/vim-airline'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'severin-lemaignan/vim-minimap'
 Plug 'ambv/black'
 Plug 'sheerun/vim-polyglot'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'gu-fan/riv.vim'
-" Plug 'Konfekt/FastFold'
-" Plug 'tmhedberg/SimpylFold'
 if has('nvim')
     let $GH_USER = "brad2913"
     let $GH_PASS = "asdf"
@@ -38,6 +31,9 @@ if has('nvim')
     Plug('AGhost-7/critiq.vim')
 endif
 call plug#end()
+
+" GHE for fugitive/rhubarb
+let g:github_enterprise_urls = ['https://github.rackspace.com']
 
 " Basic Stuff
 syntax on
@@ -153,11 +149,6 @@ let g:pylint_map='<leader>l'
 let g:pyflakes_use_quickfix=1
 let g:flake8_show_in_gutter=1
 let g:flake8_show_in_file=1
-
-" ALE settings
-let g:ale_linters = {'python': ['flake8', 'mypy']}
-let g:ale_python_mypy_options = '--ignore-missing-imports'
-let g:ale_python_mypy_executable = 'mypy'
 
 " Ack setup
 if executable('ag')
