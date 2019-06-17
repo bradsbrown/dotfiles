@@ -23,6 +23,7 @@ Plug 'ambv/black'
 Plug 'sheerun/vim-polyglot'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'gu-fan/riv.vim'
+Plug 'christoomey/vim-tmux-navigator'
 if has('nvim')
     let $GH_USER = "brad2913"
     let $GH_PASS = "asdf"
