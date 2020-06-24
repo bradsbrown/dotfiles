@@ -1,5 +1,6 @@
 export GH_TOKEN=3785752661c0346e5c336d7231ba5af76894b819
 export JOB_BASE_NAME=localtest
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
 # HELM Setting
 export TILLER_NAMESPACE=tesla-staging
@@ -25,8 +26,16 @@ parse_git_branch() {
 
 merged_update() {
     current_branch=`parse_git_branch`
-    echo Updating master with $current_branch post-merge
-    git checkout master && git pull upstream master && git branch -d $current_branch && git push origin master && git push origin --delete $current_branch
+    upstream_remote=${PROFILE_UPSTREAM_REMOTE:-upstream}
+    merge_branch=${PROFILE_MERGE_BRANCH:-master}
+    do_origin_push=${PROFILE_GMM_PUSH:-true}
+
+    echo Updating $merge_branch with $current_branch post-merge
+    git checkout $merge_branch && git pull $upstream_remote $merge_branch && git branch -d $current_branch && git push origin --delete $current_branch
+    if [ "$do_origin_push" = true ]; then
+        git push origin $merge_branch
+    fi
+
 }
 alias ,gmm='merged_update'
 
@@ -45,10 +54,18 @@ last_sun() {
     date -v -Sun -v -1w +%Y-%m-%d
 }
 
+master_merge() {
+    git checkout master && git pull origin master && ,tb $1 && git merge master
+}
+
 # Work-specific Aliases
 alias .jjb='rm -rf ~/jjb && ./build-jobs.sh --test -o ~/jjb && ./build-jobs.sh --cluster --test -o ~/jjb'
 alias .jirawk="jira-search-issues \"project = QERBA and assignee = currentUser() and status changed after `last_sun`\""
 alias .jirarev="jira-search-issues \"project = QERBA AND status != Closed AND Collaborators = currentUser()\""
+alias xls="exa --long --header --git"
+alias xlt="xls -T -L 2"
+alias dcf="docker-compose --file docker-compose.ci.yml"
+alias dcr="dcf run"
 
 # ARIC Login
 function ,aric() {

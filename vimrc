@@ -8,7 +8,8 @@ endif
 " Plug Stuff
 filetype off
 call plug#begin()
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+" Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
@@ -19,22 +20,37 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-commentary'
 Plug 'bling/vim-airline'
 Plug 'jiangmiao/auto-pairs'
-Plug 'ambv/black'
+Plug 'petobens/poet-v'
+" if !has('nvim')
+Plug 'psf/black', { 'tag': '19.10b0' }
+" endif
 Plug 'sheerun/vim-polyglot'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'gu-fan/riv.vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'junegunn/vim-easy-align'
+if !has('nvim')
+    Plug 'heavenshell/vim-pydocstring'
+endif
 if has('nvim')
     let $GH_USER = "brad2913"
     let $GH_PASS = "asdf"
     let g:critiq_github_url = "https://github.rackspace.com/api/v3"
     let g:critiq_github_oauth = 1
     Plug('AGhost-7/critiq.vim')
+    Plug 'vimlab/split-term.vim'
 endif
 call plug#end()
 
 " GHE for fugitive/rhubarb
 let g:github_enterprise_urls = ['https://github.rackspace.com']
+
+" Poet-V Airline integration
+let g:airline#extensions#poetv#enabled = 1
+
+" Vim Easy Align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Basic Stuff
 syntax on
@@ -187,6 +203,10 @@ nnoremap <silent> <M-F12> :BufExplorer<CR>
 nnoremap <silent> <F12> :bn<CR>
 nnoremap <silent> <S-F12> :bp<CR>
 
+" Pydocstring
+let g:pydocstring_templates_dir = '~/.vim/pydocstring_templates'
+nmap <silent> <C-m> <Plug>(pydocstring)
+
 " coc.vim
 set hidden
 set nobackup
@@ -208,7 +228,11 @@ function! s:check_back_space() abort
 endfunction
 
 inoremap <silent><expr> <c-space> coc#refresh()
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+if exists('*complete_info')
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
 nmap <silent> gd <Plug>(coc-definition)
@@ -227,3 +251,11 @@ endfunction
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+nnoremap <silent> <space>a :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>e :<C-u>CocList extensions<cr>
+nnoremap <silent> <space>c :<C-u>CocList commands<cr>
+nnoremap <silent> <space>o :<C-u>CocList outline<cr>
+nnoremap <silent> <space>s :<C-u>CocList -I symbols<cr>

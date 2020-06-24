@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:${HOME}/.local/bin
+export PATH=/usr/local/bin:$PATH:${HOME}/.local/bin
 export DISABLE_AUTO_TITLE='true'
 export PYTHONDONTWRITEBYTECODE=1
 #
@@ -14,7 +14,9 @@ export ZSH="${HOME}/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="lambda-pure"
+# autoload -U promptinit; promptinit
+# prompt lambda-pure
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -84,7 +86,11 @@ plugins=(
     pip
     pyenv
     tmux
+    vi-mode
     z
+    zsh_reload
+    zsh-autosuggestions
+    zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -125,3 +131,12 @@ eval "$(_TMUXP_COMPLETE=source_zsh tmuxp)"
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
 export WORKON_HOME=$HOME/.virtualenvs
 pyenv virtualenvwrapper
+
+eval $(thefuck --alias)
+
+show_virtual_env() {
+      if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
+    echo "($(basename $VIRTUAL_ENV))"
+  fi
+}
+PS1='$(show_virtual_env)'$PS1
