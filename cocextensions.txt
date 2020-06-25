@@ -1,0 +1,13 @@
+coc-css
+coc-docker
+coc-git
+coc-highlight
+coc-jira-complete
+coc-json
+coc-markdownlint
+coc-marketplace
+coc-python
+coc-terminal
+coc-tsserver
+coc-utils
+coc-yaml
