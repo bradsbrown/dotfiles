@@ -116,6 +116,7 @@ set autoindent                      " auto indent
 set list                            " show all chars
 set listchars=tab:>-                " show tab chars clearly
 autocmd Filetype cucumber setlocal ts=2 sw=2 expandtab  " Special tab settings for Gherkin files
+autocmd Filetype javascript setlocal ts=2 sw=2 expandtab  " Special tab settings for Gherkin files
 
 " Better Git Stuff
 autocmd FileType gitcommit setlocal spell
