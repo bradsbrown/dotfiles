@@ -60,8 +60,8 @@ master_merge() {
 
 # Work-specific Aliases
 alias .jjb='rm -rf ~/jjb && ./build-jobs.sh --test -o ~/jjb && ./build-jobs.sh --cluster --test -o ~/jjb'
-alias .jirawk="jira-search-issues \"project = QERBA and assignee = currentUser() and status changed after `last_sun`\""
-alias .jirarev="jira-search-issues \"project = QERBA AND status != Closed AND Collaborators = currentUser()\""
+alias .jirawk="jira-search-issues \"project in (DLA, DLB) and assignee = currentUser() and status changed after `last_sun`\""
+alias .jirarev="jira-search-issues \"project = (DLA, DLB) AND status != Closed AND Collaborators = currentUser()\""
 alias xls="exa --long --header --git"
 alias xlt="xls -T -L 2"
 alias dcf="docker-compose --file docker-compose.ci.yml"
@@ -87,6 +87,16 @@ function dev() {
     pushd ~/Development/qem/docker
     ./dev "$@"
     popd
+}
+
+# Random Helpers
+function restoreMonitors() {
+    displayplacer "id:BCE23440-B3C4-2846-B1E7-1395166A4E29 res:3440x1440 hz:50 color_depth:8 scaling:off origin:(0,0) degree:0" "id:F38C2356-06EF-ADE3-1ADF-6B31FE209B31 res:1692x3008 hz:60 color_depth:8 scaling:on origin:(-1692,-1022) degree:90" "id:12050794-68E2-D325-D7B2-168DC0FA36D3 res:1692x3008 hz:60 color_depth:8 scaling:on origin:(3440,-861) degree:90"
+}
+
+function resetQL() {
+    xattr -d -r com.apple.quarantine ~/Library/QuickLook
+    qlmanage -r
 }
 
 # branch searcher
@@ -115,4 +125,3 @@ _tmux_send_keys_all_panes_ () {
     done
 }
 alias tmpp="_tmux_send_keys_all_panes_"
-

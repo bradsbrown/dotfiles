@@ -14,7 +14,7 @@ export ZSH="${HOME}/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="lambda-pure"
+# ZSH_THEME="lambda-pure"
 # autoload -U promptinit; promptinit
 # prompt lambda-pure
 
@@ -91,6 +91,7 @@ plugins=(
     zsh_reload
     zsh-autosuggestions
     zsh-syntax-highlighting
+    zsh-peco-history
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -98,6 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
+export ZSH_PECO_HISTORY_DEDUP=1
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -130,7 +132,7 @@ eval "$(_TMUXP_COMPLETE=source_zsh tmuxp)"
 # pyenv
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
 export WORKON_HOME=$HOME/.virtualenvs
-pyenv virtualenvwrapper
+pyenv virtualenvwrapper_lazy
 
 eval $(thefuck --alias)
 
@@ -140,3 +142,4 @@ show_virtual_env() {
   fi
 }
 PS1='$(show_virtual_env)'$PS1
+eval "$(starship init zsh)"

@@ -2,6 +2,11 @@
     // Geenral Settings
     "diagnostic.checkCurrentLine": true,
 
+    // coc-diagnostic settings
+    "diagnostic-languageserver.filetypes": {
+        "sh": "shellcheck"
+    },
+
     // JSON Settings
     "json.enable": true,
 
@@ -27,6 +32,25 @@
     "git.enableGutters": true,
 
     // coc-jira-complete
-    "jira.workspaceUrl": "https://jumpcloud.atlassian.net",
-    "jira.user.email": "brad.brown@jumpcloud.com",
+    "jira.workspaceUrl": "https://nrccua.atlassian.net",
+    "jira.user.email": "brad.brown@nrccua.org",
+
+    "languageserver": {
+        "pylance": {
+            "enable": true,
+            "filetypes": ["python"],
+            // absolute path to server.bundle.js
+            "module": "~/.vscode/extensions/ms-python.vscode-pylance-2020.10.1/dist/server.bundle.js",
+            "initializationOptions": {},
+            "settings": {
+                "python.analysis.typeCheckingMode": "basic",
+                "python.analysis.diagnosticMode": "openFilesOnly",
+                "python.analysis.autoSearchPaths": true,
+                "python.analysis.extraPaths": [],
+                "python.analysis.diagnosticSeverityOverrides": {},
+                "python.analysis.useLibraryCodeForTypes": true,
+                "python.analysis.autoImportCompletions": false
+            }
+        }
+    }
 }

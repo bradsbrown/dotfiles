@@ -1,5 +1,5 @@
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = ~/.gitignore
 	attributesfile = ~/.gitattributes
 	pager = diff-so-fancy | less --tabs=4 -RFX
@@ -13,13 +13,11 @@
 	helper = osxkeychain
 [user]
 	name = Brad Brown
-	email = brad.brown@rackspace.com
+	email = brad.brown@nrccua.org
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
-[init]
-	templatedir = ~/.git-templates
 [alias]
     files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
     stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
@@ -40,3 +38,5 @@
 	diff-image = "!f() { GIT_DIFF_IMAGE_ENABLED=1 git diff \"$@\"; }; f"
 [diff "image"]
 	command = ~/Development/git-diff-image/git_diff_image
+[pull]
+	rebase = false
