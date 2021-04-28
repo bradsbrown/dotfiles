@@ -15,9 +15,10 @@
 	name = Brad Brown
 	email = brad.brown@nrccua.org
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 	required = true
+	process = git-lfs filter-process
 [alias]
     files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
     stat = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")

@@ -9,3 +9,4 @@
 .envrc
 .mypy_cache/
 .bash_history
+.VENV/

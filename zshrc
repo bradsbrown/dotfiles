@@ -1,9 +1,9 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=/usr/local/bin:$PATH:${HOME}/.local/bin
+export PATH=/usr/local/bin:$PATH:${HOME}/.local/bin:${HOME}/.emacs.d/bin:${HOME}/go/bin
 export DISABLE_AUTO_TITLE='true'
 export PYTHONDONTWRITEBYTECODE=1
 #
-export ZSH_TMUX_AUTOSTART=false
+export ZSH_TMUX_ITERM2=true
 export TERM=xterm-256color
 # [ -n "$TMUX" ] && export TERM=screen-256color
 
@@ -85,6 +85,7 @@ plugins=(
     osx
     pip
     pyenv
+    python
     tmux
     vi-mode
     z

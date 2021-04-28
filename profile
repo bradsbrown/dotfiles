@@ -25,29 +25,29 @@ parse_git_branch() {
 }
 
 merged_update() {
-    current_branch=`parse_git_branch`
+    current_branch=$(parse_git_branch)
     upstream_remote=${PROFILE_UPSTREAM_REMOTE:-upstream}
     merge_branch=${PROFILE_MERGE_BRANCH:-master}
-    do_origin_push=${PROFILE_GMM_PUSH:-true}
+    do_origin_push=${PROFILE_GMM_PUSH:-false}
 
-    echo Updating $merge_branch with $current_branch post-merge
-    git checkout $merge_branch && git pull $upstream_remote $merge_branch && git branch -d $current_branch && git push origin --delete $current_branch
+    echo Updating "$merge_branch" with "$current_branch" post-merge
+    git checkout "$merge_branch" && git pull "$upstream_remote" "$merge_branch" && git branch -d "$current_branch"
     if [ "$do_origin_push" = true ]; then
-        git push origin $merge_branch
+        git push origin "$merge_branch"
     fi
 
 }
 alias ,gmm='merged_update'
 
 pr_bump() {
-    currentbranch=`parse_git_branch`
-    prnum=$(echo $currentbranch | sed -E "s/^pr\/(.*)/\1/g")
-    if ! [[ $currentbranch =~ pr/* ]]; then
-        echo $currentbranch is not a PR Branch!
+    currentbranch=$(parse_git_branch)
+    prnum=$(echo "$currentbranch" | sed -E "s/^pr\/(.*)/\1/g")
+    if ! [[ "$currentbranch" =~ pr/* ]]; then
+        echo "$currentbranch" is not a PR Branch!
         return
     fi
-    echo Updating $currentbranch
-    git checkout master && git pr clean && git pr $prnum upstream
+    echo Updating "$currentbranch"
+    git checkout master && git pr clean && git pr "$prnum" upstream
 }
 
 last_sun() {
@@ -125,3 +125,39 @@ _tmux_send_keys_all_panes_ () {
     done
 }
 alias tmpp="_tmux_send_keys_all_panes_"
+
+
+get_env_vars() {
+    set -a
+    eval "$(~/.local/bin/set_local_creds.py "$1")"
+}
+
+set_aws_creds() {
+    aws-mfa --profile $1
+}
+
+aws_init() {
+    set_aws_creds $1
+    get_env_vars $1
+}
+
+
+ops() {
+    eval $(op signin my)
+}
+
+op-aws() {
+    TK=$(op list items --tags=aws,nrccua | op get totp -)
+    if [ "$1" = "--cli" ]; then
+        echo $TK
+        exit
+    fi
+    echo $TK | pbcopy
+    echo "Token copied successfully!"
+}
+
+aws-init() {
+    ops
+    TK=`op-aws --cli`
+    yes $TK | aws-mfa --profile brad.brown
+}

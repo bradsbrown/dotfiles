@@ -11,22 +11,16 @@
     "json.enable": true,
 
     // Python Settings
-    "python.autoComplete.extraPaths": ["./src"],
+    // "python.autoComplete.extraPaths": ["./src"],
     "python.linting.enabled": true,
     "python.linting.mypyEnabled": true,
     "python.linting.mypyPath": "~/.local/bin/mypy",
     "python.linting.flake8Enabled": true,
     "python.linting.pylintEnabled": false,
     "python.formatting.provider": "black",
-    "python.jediEnabled": false,
-    "python.sortImports.path": "isort",
-    "python.venvFolders": [
-        "~/Library/Caches/pypoetry/virtualenvs",
-        ".virtualenvs",
-        "envs",
-        ".pyenv",
-        ".direnv"
-    ],
+    "python.venvPath": "/Users/bradbrown/.virtualenvs",
+    "pyright.disableSelfClsNotAccessed": true,
+    "pyright.organizeimports.provider": "isort",
 
     // git Settings
     "git.enableGutters": true,
@@ -34,23 +28,24 @@
     // coc-jira-complete
     "jira.workspaceUrl": "https://nrccua.atlassian.net",
     "jira.user.email": "brad.brown@nrccua.org",
+    "coc.preferences.extensionUpdateCheck": "daily"
 
-    "languageserver": {
-        "pylance": {
-            "enable": true,
-            "filetypes": ["python"],
-            // absolute path to server.bundle.js
-            "module": "~/.vscode/extensions/ms-python.vscode-pylance-2020.10.1/dist/server.bundle.js",
-            "initializationOptions": {},
-            "settings": {
-                "python.analysis.typeCheckingMode": "basic",
-                "python.analysis.diagnosticMode": "openFilesOnly",
-                "python.analysis.autoSearchPaths": true,
-                "python.analysis.extraPaths": [],
-                "python.analysis.diagnosticSeverityOverrides": {},
-                "python.analysis.useLibraryCodeForTypes": true,
-                "python.analysis.autoImportCompletions": false
-            }
-        }
-    }
+    // "languageserver": {
+    //     "pylance": {
+    //         "enable": true,
+    //         "filetypes": ["python"],
+    //         // absolute path to server.bundle.js
+    //         "module": "~/.vscode/extensions/ms-python.vscode-pylance-2020.11.1/dist/server.bundle.js",
+    //         "initializationOptions": {},
+    //         "settings": {
+    //             "python.analysis.typeCheckingMode": "basic",
+    //             "python.analysis.diagnosticMode": "openFilesOnly",
+    //             "python.analysis.autoSearchPaths": true,
+    //             "python.analysis.extraPaths": [],
+    //             "python.analysis.diagnosticSeverityOverrides": {},
+    //             "python.analysis.useLibraryCodeForTypes": true,
+    //             "python.analysis.autoImportCompletions": false
+    //         }
+    //     }
+    // }
 }

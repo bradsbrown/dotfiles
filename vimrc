@@ -21,8 +21,9 @@ Plug 'tpope/vim-commentary'
 Plug 'bling/vim-airline'
 Plug 'jiangmiao/auto-pairs'
 Plug 'petobens/poet-v'
+Plug 'jaxbot/semantic-highlight.vim'
 " if !has('nvim')
-Plug 'psf/black', { 'tag': '19.10b0' }
+Plug 'psf/black', { 'tag': '20.8b1' }
 " endif
 Plug 'sheerun/vim-polyglot'
 Plug 'martinda/Jenkinsfile-vim-syntax'
@@ -149,7 +150,7 @@ endfunc
 nnoremap <C-l> :call g:ToggleNuMode()<CR>
 let mapleader = "\<Space>"
 nmap <Leader>8 :call Flake8()<CR>
-nmap <Leader>b :Black<CR>
+" nmap <Leader>b :Black<CR>
 
 " Triger `autoread` when files changes on disk
 set autoread
@@ -208,6 +209,9 @@ nnoremap <silent> <S-F12> :bp<CR>
 let g:pydocstring_templates_dir = '~/.vim/pydocstring_templates'
 nmap <silent> <C-m> <Plug>(pydocstring)
 
+" Semantic Highlight
+nnoremap <Leader>h :SemanticHighlightToggle<cr>
+
 " coc.vim
 set hidden
 set nobackup
@@ -227,6 +231,8 @@ function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1] =~# '\s'
 endfunction
+
+nmap <leader>b :CocCommand python.sortImports<CR> :Black<CR>
 
 inoremap <silent><expr> <c-space> coc#refresh()
 if exists('*complete_info')
