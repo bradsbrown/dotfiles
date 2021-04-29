@@ -87,7 +87,8 @@ plugins=(
     pyenv
     python
     tmux
-    vi-mode
+    # vi-mode
+    zsh-vi-mode
     z
     zsh_reload
     zsh-autosuggestions
