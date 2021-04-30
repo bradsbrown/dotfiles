@@ -213,6 +213,28 @@ nmap <silent> <C-m> <Plug>(pydocstring)
 nnoremap <Leader>h :SemanticHighlightToggle<cr>
 
 " coc.vim
+let g:coc_global_extensions = [
+            \ 'coc-css',
+            \ 'coc-diagnostic',
+            \ 'coc-docker',
+            \ 'coc-format-json',
+            \ 'coc-git',
+            \ 'coc-highlight',
+            \ 'coc-jira-complete',
+            \ 'coc-json',
+            \ 'coc-markdownlint',
+            \ 'coc-marketplace',
+            \ 'coc-pyright',
+            \ 'coc-sh',
+            \ 'coc-snippets',
+            \ 'coc-sql',
+            \ 'coc-swagger',
+            \ 'coc-syntax',
+            \ 'coc-terminal',
+            \ 'coc-toml',
+            \ 'coc-tsserver',
+            \ 'coc-yaml'
+            \ ]
 set hidden
 set nobackup
 set nowritebackup
