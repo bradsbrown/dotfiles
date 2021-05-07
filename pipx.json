@@ -1,0 +1,15 @@
+[
+  "aws-mfa",
+  "bugwarrior",
+  "devpi-client",
+  "devpi-server",
+  "devpi-web",
+  "jiratools",
+  "markflow",
+  "mypy",
+  "pdm",
+  "pew",
+  "poetry",
+  "present",
+  "tmuxp"
+]
