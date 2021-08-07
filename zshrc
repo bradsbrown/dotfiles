@@ -76,7 +76,22 @@ export ZSH="${HOME}/.oh-my-zsh"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+if [[ ! -f ~/.zpm/zpm.zsh ]]; then
+    git clone --recursive https://github.com/zpm-zsh/zpm ~/.zpm
+fi
 fpath+=~/.zfunc
+if [[ ! -d $ZSH/custom/plugins/zsh-vi-mode ]]; then
+    git clone https://github.com/jeffreytse/zsh-vi-mode $ZSH/custom/plugins/zsh-vi-mode
+fi
+if [[ ! -d $ZSH/custom/plugins/zsh-autosuggestions ]]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH/custom/plugins/zsh-autosuggestions
+fi
+if [[ ! -d $ZSH/custom/plugins/zsh-syntax-highlighting ]]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH/custom/plugins/zsh-syntax-highlighting
+fi
+if [[ ! -d $ZSH/custom/plugins/zsh-peco-history ]]; then
+    git clone https://github.com/jimeh/zsh-peco-history $ZSH/custom/plugins/zsh-peco-history
+fi
 plugins=(
     git
     git-extras
@@ -87,10 +102,10 @@ plugins=(
     pyenv
     python
     tmux
-    # vi-mode
-    zsh-vi-mode
     z
     zsh_reload
+    # Custom Plugins
+    zsh-vi-mode
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-peco-history
@@ -132,6 +147,8 @@ source ~/.profile
 eval "$(direnv hook zsh)"
 eval "$(_TMUXP_COMPLETE=source_zsh tmuxp)"
 # pyenv
+eval "$(pyenv init -)"
+eval "$(pyenv init --path)"
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
 export WORKON_HOME=$HOME/.virtualenvs
 pyenv virtualenvwrapper_lazy
