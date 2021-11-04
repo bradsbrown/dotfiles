@@ -1,7 +1,19 @@
+# uncomment the below line to let zprof inspect startup
+# zmodload zsh/zprof
+
+# Only check compinit cache once a day
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+    compinit
+done
+
+compinit -C
+
 # If you come from bash you might have to change your $PATH.
 export PATH=/usr/local/bin:$PATH:${HOME}/.local/bin:${HOME}/.emacs.d/bin:${HOME}/go/bin
 export DISABLE_AUTO_TITLE='true'
 export PYTHONDONTWRITEBYTECODE=1
+export GPG_TTY=$(tty)
 #
 export ZSH_TMUX_ITERM2=true
 export TERM=xterm-256color
@@ -71,6 +83,7 @@ export ZSH="${HOME}/.oh-my-zsh"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -80,18 +93,11 @@ if [[ ! -f ~/.zpm/zpm.zsh ]]; then
     git clone --recursive https://github.com/zpm-zsh/zpm ~/.zpm
 fi
 fpath+=~/.zfunc
-if [[ ! -d $ZSH/custom/plugins/zsh-vi-mode ]]; then
-    git clone https://github.com/jeffreytse/zsh-vi-mode $ZSH/custom/plugins/zsh-vi-mode
-fi
-if [[ ! -d $ZSH/custom/plugins/zsh-autosuggestions ]]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH/custom/plugins/zsh-autosuggestions
-fi
-if [[ ! -d $ZSH/custom/plugins/zsh-syntax-highlighting ]]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH/custom/plugins/zsh-syntax-highlighting
-fi
-if [[ ! -d $ZSH/custom/plugins/zsh-peco-history ]]; then
-    git clone https://github.com/jimeh/zsh-peco-history $ZSH/custom/plugins/zsh-peco-history
-fi
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
 plugins=(
     git
     git-extras
@@ -102,21 +108,34 @@ plugins=(
     pyenv
     python
     tmux
+    zsh-vi-mode
     z
-    zsh_reload
     # Custom Plugins
     zsh-vi-mode
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-peco-history
+    evalcache
 )
 
 source $ZSH/oh-my-zsh.sh
+
+# pyenv-virtualenvwrapper
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
+export WORKON_HOME=$HOME/.virtualenvs
+pyenv virtualenvwrapper_lazy
 
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export ZSH_PECO_HISTORY_DEDUP=1
+function zvm_after_lazy_keybindings() {
+    zvm_bindkey main '^R' peco_select_history
+    zvm_bindkey viins '^R' peco_select_history
+    zvm_bindkey vicmd '^R' peco_select_history
+    zvm_bindkey viopp '^R' peco_select_history
+    zvm_bindkey visual '^R' peco_select_history
+}
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -144,16 +163,10 @@ fi
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.aliases
 source ~/.profile
-eval "$(direnv hook zsh)"
+_evalcache direnv hook zsh
 eval "$(_TMUXP_COMPLETE=source_zsh tmuxp)"
-# pyenv
-eval "$(pyenv init -)"
-eval "$(pyenv init --path)"
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYENV="true"
-export WORKON_HOME=$HOME/.virtualenvs
-pyenv virtualenvwrapper_lazy
 
-eval $(thefuck --alias)
+_evalcache thefuck --alias
 
 show_virtual_env() {
       if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
@@ -161,4 +174,4 @@ show_virtual_env() {
   fi
 }
 PS1='$(show_virtual_env)'$PS1
-eval "$(starship init zsh)"
+_evalcache starship init zsh

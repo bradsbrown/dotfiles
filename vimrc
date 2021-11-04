@@ -8,14 +8,15 @@ endif
 " Plug Stuff
 filetype off
 call plug#begin()
-" Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-abolish'
 " Plug 'mileszs/ack.vim'
 Plug 'tpope/vim-commentary'
 Plug 'bling/vim-airline'
@@ -30,21 +31,24 @@ Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'gu-fan/riv.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/vim-easy-align'
+Plug 'vitalk/vim-shebang'
 if !has('nvim')
     Plug 'heavenshell/vim-pydocstring'
 endif
 if has('nvim')
     let $GH_USER = "brad2913"
     let $GH_PASS = "asdf"
-    let g:critiq_github_url = "https://github.rackspace.com/api/v3"
+    " let g:critiq_github_url = "https://github.rackspace.com/api/v3"
     let g:critiq_github_oauth = 1
-    Plug('AGhost-7/critiq.vim')
+    Plug 'AGhost-7/critiq.vim'
     Plug 'vimlab/split-term.vim'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'nvim-treesitter/playground'
 endif
 call plug#end()
 
 " GHE for fugitive/rhubarb
-let g:github_enterprise_urls = ['https://github.rackspace.com']
+" let g:github_enterprise_urls = ['https://github.rackspace.com']
 
 " Poet-V Airline integration
 let g:airline#extensions#poetv#enabled = 1
@@ -58,7 +62,7 @@ syntax on
 filetype on
 filetype plugin indent on
 set nocompatible
-colors PaperColor
+colors escuro
 if has("gui_macvim")
     set macligatures
    set guifont=Fira\ Code\ Retina:h14
@@ -69,7 +73,12 @@ set nowrap                          " Don't wrap text
 command! W :w                       " Map W to w
 
 " Editing Stuff
-set number                          " add line numbers
+set number relativenumber           " add line numbers
+augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
+augroup END
 set ruler                           " display cursor location info
 set cursorline                      " highlight active cursor line
 set showmatch                       " mark open/close punctuation when typing
@@ -212,6 +221,21 @@ nmap <silent> <C-m> <Plug>(pydocstring)
 " Semantic Highlight
 nnoremap <Leader>h :SemanticHighlightToggle<cr>
 
+" Treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = {
+            \ "bash",
+            \ "python",
+            \ "javascript",
+            \ "yaml",
+            \ "vim"
+    },
+    highlight = { enable = true },
+    }
+EOF
+
+
 " coc.vim
 let g:coc_global_extensions = [
             \ 'coc-css',
@@ -224,6 +248,7 @@ let g:coc_global_extensions = [
             \ 'coc-json',
             \ 'coc-markdownlint',
             \ 'coc-marketplace',
+            \ 'coc-prettier',
             \ 'coc-pyright',
             \ 'coc-sh',
             \ 'coc-snippets',
@@ -254,7 +279,14 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1] =~# '\s'
 endfunction
 
-nmap <leader>b :CocCommand python.sortImports<CR> :Black<CR>
+function! PythonFormat()
+    :Black
+    :CocCommand python.sortImports
+endfunction
+nmap <leader>b :call PythonFormat()<CR>
+if !($SKIP_BUFPRE)
+    autocmd BufWritePre *.py call PythonFormat()
+endif
 
 inoremap <silent><expr> <c-space> coc#refresh()
 if exists('*complete_info')

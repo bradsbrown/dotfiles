@@ -104,7 +104,6 @@ cask "slack"
 cask "suspicious-package"
 cask "syncthing"
 cask "xquartz"
-mas "1Password 7", id: 1333542190
 mas "Amphetamine", id: 937984704
 mas "Aviary", id: 1522043420
 mas "Dark Reader for Safari", id: 1438243180
@@ -130,6 +129,3 @@ mas "Reeder", id: 1449412482
 mas "Soulver", id: 413965349
 mas "Spark", id: 1176895641
 mas "Tweetbot", id: 1384080005
-mas "Twitter", id: 1482454543
-mas "Xcode", id: 497799835
-mas "yFi", id: 1526841848

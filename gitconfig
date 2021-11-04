@@ -13,7 +13,7 @@
 	helper = osxkeychain
 [user]
 	name = Brad Brown
-	email = brad.brown@nrccua.org
+	email = brad@bradsbrown.com
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
