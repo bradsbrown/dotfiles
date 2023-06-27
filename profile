@@ -2,6 +2,9 @@ export GH_TOKEN=3785752661c0346e5c336d7231ba5af76894b819
 export JOB_BASE_NAME=localtest
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
+# Tailscale CLI
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
 # HELM Setting
 export TILLER_NAMESPACE=tesla-staging
 export RSLI_CHART_ROOT=${HOME}/Development/qem/charts
@@ -67,11 +70,12 @@ alias xlt="xls -T -L 2"
 alias dcf="docker-compose --file docker-compose.ci.yml"
 alias dcr="dcf run"
 alias ghcs="ssh -p 2222 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null root@localhost"
+alias gag="ag --python --ignore cdk.out --ignore VENV"
 
 
 # Random Helpers
 function restoreMonitors() {
-    displayplacer "id:8E5D699E-72D7-E0F7-1B96-4074678CDB4D res:3440x1440 hz:50 color_depth:8 scaling:off origin:(0,0) degree:0" "id:F38C2356-06EF-ADE3-1ADF-6B31FE209B31 res:1890x3360 hz:60 color_depth:8 scaling:on origin:(-1890,-1238) degree:90" "id:12050794-68E2-D325-D7B2-168DC0FA36D3 res:1890x3360 hz:60 color_depth:8 scaling:on origin:(3440,-716) degree:90"
+    displayplacer "id:D815D2A8-FAA9-40EF-912E-740A708E328B res:3440x1440 hz:50 color_depth:8 scaling:off origin:(0,0) degree:0" "id:446AA448-B7F5-4B3E-925B-792CA8B75B81 res:1890x3360 hz:60 color_depth:8 scaling:on origin:(3440,-932) degree:90" "id:FF01F1DA-EF5B-47DE-A784-0F191C3F3151 res:1890x3360 hz:60 color_depth:8 scaling:on origin:(-1890,-1342) degree:90"
 }
 
 function restoreSidecar() {
@@ -157,4 +161,65 @@ aws-init() {
     ops
     TK=$(op-aws --cli)
     yes "$TK" | aws-mfa --profile brad.brown
+}
+
+aws-ssh() {
+    SSH_USER=ec2-user
+    if [ "$1" = "--user" ]; then
+        shift
+        SSH_USER=$1
+        shift
+    fi
+    ssh -i ~/.ssh/nio.pem -l "$SSH_USER" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$1"
+}
+
+matcam() {
+    read -r rows cols < <(stty size)
+    rows=$((rows - 5))
+    cols=$((cols - 5))
+    matrix-webcam "$cols" "$rows"
+}
+
+clear_vim_temps() {
+    ls ./**/*.py*.py | xargs rm
+}
+alias ,cvt='clear_vim_temps'
+
+prodrun() {
+    AWS_PROFILE="936100781900_PowerUserAccess" "$@"
+}
+
+dbvars() {
+    DB_SECRET_NAME="unitas-edgedb-secret" DATABASE_NAME="nis_data" TIME_DB_SECRET_NAME="unitas-influx-secret" "$@"
+}
+
+proddbvars() {
+    AWS_PROFILE="936100781900_PowerUserAccess" DB_SECRET_NAME="unitas-edgedb-secret" DATABASE_NAME="nis_data" TIME_DB_SECRET_NAME="unitas-influx-secret" "$@"
+}
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+alias zj="zellij"
+
+export PATH="/Users/bradbrown/Library/Application Support/edgedb/bin:/opt/homebrew/opt/mysql-client/bin:$PATH"
+
+bsky_tok() {
+    creds=$(op item get "BlueSky Social" --fields label=username,label=password --format json)
+    username=$(echo "$creds" | jq -r '.[0].value')
+    password=$(echo "$creds" | jq -r '.[1].value')
+    tok=$(curl -s --json "{\"identifier\": \"$username\", \"password\": \"$password\"}" https://bsky.social/xrpc/com.atproto.server.createSession | jq -j '.accessJwt')
+    echo $tok
+    # curl -s \
+    #     -H "Authorization: Bearer $(curl -s --json '{"identifier": "aliceisjustplaying.bsky.social", "password": "letmein"}' https://bsky.social/xrpc/com.atproto.server.createSession | jq -j ".accessJwt")" "https://bsky.social/xrpc/com.atproto.server.getAccountInviteCodes" | jq -r '.codes[].uses[].usedBy' | xargs -I{} -P10 curl -s 'https://plc.directory/{}' | jq -r '.alsoKnownAs[0]' | sed -e 's#at://#@#'
+}
+
+bsky_invites() {
+    tok=$(bsky_tok)
+    curl -s \
+        -H "Authorization: Bearer ${tok}" \
+        "https://bsky.social/xrpc/com.atproto.server.getAccountInviteCodes" \
+        | jq -r '.codes[].uses[].usedBy' \
+        | xargs -I{} -P10 curl -s 'https://plc.directory/{}' \
+        | jq -r '.alsoKnownAs[0]' \
+        | sed -e 's#at://#@#'
 }

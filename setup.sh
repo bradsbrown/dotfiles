@@ -29,18 +29,7 @@ if [ "$exit_code" -ne "0" ]; then
     python3 -m pip install --user pipx
 fi
 
-# install pipenv
-Command -v pipenv
-exit_code=$?
-if [ "$exit_code" -ne "0" ]; then
-    pipx install pipenv
-fi
-
-Command -v poetry
-exit_code=$?
-if [ "$exit_code" -ne "0" ]; then
-    pipx install poetry
-fi
+while read in; do pipx install "$in"; done <pipx.text
 
 if ! [ -d "${HOME}/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"

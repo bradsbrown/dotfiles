@@ -8,8 +8,8 @@ endif
 " Plug Stuff
 filetype off
 call plug#begin()
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
@@ -23,15 +23,16 @@ Plug 'bling/vim-airline'
 Plug 'jiangmiao/auto-pairs'
 Plug 'petobens/poet-v'
 Plug 'jaxbot/semantic-highlight.vim'
-" if !has('nvim')
-Plug 'psf/black', { 'tag': '20.8b1' }
-" endif
+Plug 'psf/black', { 'tag': 'stable' }
 Plug 'sheerun/vim-polyglot'
 Plug 'martinda/Jenkinsfile-vim-syntax'
-Plug 'gu-fan/riv.vim'
+" Plug 'gu-fan/riv.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/vim-easy-align'
 Plug 'vitalk/vim-shebang'
+Plug 'kdheepak/lazygit.nvim'
+Plug 'akinsho/toggleterm.nvim'
+Plug 'edgedb/edgedb-vim'
 if !has('nvim')
     Plug 'heavenshell/vim-pydocstring'
 endif
@@ -221,22 +222,31 @@ nmap <silent> <C-m> <Plug>(pydocstring)
 " Semantic Highlight
 nnoremap <Leader>h :SemanticHighlightToggle<cr>
 
+" LazyGit
+nnoremap <silent> <leader>gg :LazyGit<CR>
+
+" ToggleTerm Setup
+lua require('toggleterm').setup{}
+nnoremap <leader>t :ToggleTerm size=60<CR>
+nnoremap <leader>r :ToggleTerm direction=float size=60<CR>
+
 " Treesitter
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-    ensure_installed = {
-            \ "bash",
-            \ "python",
-            \ "javascript",
-            \ "yaml",
-            \ "vim"
-    },
-    highlight = { enable = true },
+lua << EOF
+    require'nvim-treesitter.configs'.setup {
+        ensure_installed = {
+                \ "bash",
+                \ "python",
+                \ "javascript",
+                \ "yaml",
+                \ "vim"
+        },
+        highlight = { enable = true },
     }
 EOF
 
 
 " coc.vim
+            " \ 'coc-jira-complete',
 let g:coc_global_extensions = [
             \ 'coc-css',
             \ 'coc-diagnostic',
@@ -244,7 +254,6 @@ let g:coc_global_extensions = [
             \ 'coc-format-json',
             \ 'coc-git',
             \ 'coc-highlight',
-            \ 'coc-jira-complete',
             \ 'coc-json',
             \ 'coc-markdownlint',
             \ 'coc-marketplace',
@@ -268,16 +277,49 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 " let g:coc_force_debug = 1
-inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+" Pulled from :h coc-completion-example
 function! s:check_back_space() abort
     let col = col('.') - 1
-    return !col || getline('.')[col - 1] =~# '\s'
+    return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
+" Insert <tab> when previous text is space, refresh completion if not.
+inoremap <silent><expr> <TAB>
+    \ coc#pum#visible() ? coc#pum#next(1):
+    \ <SID>check_back_space() ? "\<Tab>" :
+    \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+inoremap <expr> <CR> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
+
+inoremap <silent><expr> <TAB>
+  \ coc#pum#visible() ? coc#_select_confirm() :
+  \ coc#expandableOrJumpable() ?
+  \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+" inoremap <silent><expr> <TAB>
+"     \ pumvisible() ? "\<C-n>" :
+"     \ <SID>check_back_space() ? "\<TAB>" :
+"     \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" function! s:check_back_space() abort
+"     let col = col('.') - 1
+"     return !col || getline('.')[col - 1] =~# '\s'
+" endfunction
 
 function! PythonFormat()
     :Black
@@ -320,3 +362,6 @@ nnoremap <silent> <space>e :<C-u>CocList extensions<cr>
 nnoremap <silent> <space>c :<C-u>CocList commands<cr>
 nnoremap <silent> <space>o :<C-u>CocList outline<cr>
 nnoremap <silent> <space>s :<C-u>CocList -I symbols<cr>
+
+nnoremap <silent><expr> <c-j> coc#float#has-scroll() ? coc#float#scroll(1, 1) : "\<c-j>"
+nnoremap <silent><expr> <c-k> coc#float#has-scroll() ? coc#float#scroll(0, 1) : "\<c-k>"

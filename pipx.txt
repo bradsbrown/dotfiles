@@ -1,0 +1,14 @@
+aws-mfa
+bugwarrior
+devpi-client
+devpi-server
+devpi-web
+jiratools
+markflow
+mypy
+pdm
+pew
+pipenv
+poetry
+present
+tmuxp
